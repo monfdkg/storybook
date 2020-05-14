@@ -8,8 +8,9 @@ import {
   getBabelDependencies,
   installDependencies,
 } from '../../helpers';
+import { NpmOptions } from '../../NpmOptions';
 
-export default async (npmOptions) => {
+export default async (npmOptions: NpmOptions) => {
   const storybookVersion = await getVersion(npmOptions, '@storybook/marionette');
   fse.copySync(path.resolve(__dirname, 'template/'), '.', { overwrite: true });
 
@@ -30,7 +31,7 @@ export default async (npmOptions) => {
 
   const babelDependencies = await getBabelDependencies(npmOptions, packageJson);
 
-  installDependencies(npmOptions, [
+  installDependencies({ ...npmOptions, packageJson }, [
     `@storybook/marionette@${storybookVersion}`,
     ...babelDependencies,
   ]);
